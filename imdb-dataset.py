@@ -182,6 +182,7 @@ df['char_length'] = df['review'].str.len()
 df['word_length'] = df['tokenized_review'].apply(len)
 
 import seaborn as sns
+
 sns.distplot(df[df['sentiment'] == 'positive']['char_length'])
 sns.distplot(df[df['sentiment'] == 'negative']['char_length'])
 
@@ -198,6 +199,7 @@ pd.Series(ngrams(df['tokenized_review'].sum(),2)).value_counts()
 pd.Series(ngrams(df['tokenized_review'].sum(),3)).value_counts()
 
 from wordcloud import WordCloud
+
 import matplotlib.pyplot as plt
 
 plt.figure(figsize = (20,20)) # Positive Review Text
