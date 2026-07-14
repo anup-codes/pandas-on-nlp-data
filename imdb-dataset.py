@@ -205,3 +205,14 @@ import matplotlib.pyplot as plt
 plt.figure(figsize = (20,20)) # Positive Review Text
 wc = WordCloud(width = 1600 , height = 800).generate(" ".join(df[df['sentiment'] == 'positive']['review']))
 plt.imshow(wc)
+
+
+
+# BoW
+
+from sklearn.feature_extraction.text import CountVectorizer
+count_vectorizer = CountVectorizer(max_features=5000,ngram_range=(1,3))
+bag_of_words = count_vectorizer.fit_transform(df['review'])
+bag_of_words = pd.DataFrame(bag_of_words.toarray(),columns = count_vectorizer.get_feature_names())
+
+bag_of_words
