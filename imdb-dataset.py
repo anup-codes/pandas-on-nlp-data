@@ -216,3 +216,12 @@ bag_of_words = count_vectorizer.fit_transform(df['review'])
 bag_of_words = pd.DataFrame(bag_of_words.toarray(),columns = count_vectorizer.get_feature_names())
 
 bag_of_words
+
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(bag_of_words.values)
+
+pca_result.shape
+
+sns.scatterplot(pca_result[:,0],pca_result[:,1],hue=df['sentiment'])
