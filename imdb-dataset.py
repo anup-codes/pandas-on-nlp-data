@@ -156,3 +156,50 @@ def remove_puctuation(text):
 
 df['review'] = df['review'].apply(remove_puctuation)
 
+from nltk.tokenize import word_tokenize
+df['tokenized_review'] = df['review'].apply(word_tokenize)
+
+# stop word removal
+from nltk.corpus import stopwords
+
+def remove_stopwords(text):
+    
+    L = []
+    for word in text:
+        if word not in stopwords.words('english'):
+            L.append(word)
+            
+    return L
+
+df['tokenized_review'] = df['tokenized_review'].apply(remove_stopwords)
+
+
+df['review'] = df['tokenized_review'].apply(lambda x:" ".join(x))
+
+df['char_length'] = df['review'].str.len()
+
+
+df['word_length'] = df['tokenized_review'].apply(len)
+
+import seaborn as sns
+sns.distplot(df[df['sentiment'] == 'positive']['char_length'])
+sns.distplot(df[df['sentiment'] == 'negative']['char_length'])
+
+sns.distplot(df[df['sentiment'] == 'positive']['word_length'])
+sns.distplot(df[df['sentiment'] == 'negative']['word_length'])
+
+df['tokenized_review'].sum()
+
+
+from nltk import ngrams
+
+pd.Series(ngrams(df['tokenized_review'].sum(),2)).value_counts()
+
+pd.Series(ngrams(df['tokenized_review'].sum(),3)).value_counts()
+
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+plt.figure(figsize = (20,20)) # Positive Review Text
+wc = WordCloud(width = 1600 , height = 800).generate(" ".join(df[df['sentiment'] == 'positive']['review']))
+plt.imshow(wc)
